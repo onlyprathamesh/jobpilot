@@ -1,0 +1,28 @@
+# Node.js
+node_modules/
+npm-debug.log*
+.env
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# Runtime
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# IDE
+.vscode/
+.DS_Store
+
+# OS
+Thumbs.db
+
+# Mongo
+dump/
+
+# Python Virtual Environment
+venv/
