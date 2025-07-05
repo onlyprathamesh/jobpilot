@@ -1,5 +1,6 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
+const {generateToken} = require("../utils/generateToken");
 
 const userRegister =  async (req, res) => {
     const {userName, email, password} = req.body;
@@ -12,14 +13,15 @@ const userRegister =  async (req, res) => {
             const userNameExists = await User.findOne({userName});
             const userEmailExists = await User.findOne({email});
             if (userNameExists || userEmailExists) {
-                return res.status(400).send({msg:"User already exists."});
+                return res.status(409).send({msg:"User already exists."});
             }
 
             const hashedPassword = await bcrypt.hash(password, 11);
         
             const createdUser = await User.create({userName, email, password:hashedPassword});
+            const token = generateToken(createdUser._id, createdUser.userName);
+            res.status(200).send({msg:"User created successfully.", token});
             console.log("User created successfully.");
-            res.status(200).send({msg:"User created successfully.", createdUser});
         
     } catch (error) {
         res.status(400).send({msg:"Error creating user.", error: error.message});
@@ -47,7 +49,8 @@ const userLogin = async (req, res) => {
         const isValid = await bcrypt.compare(password, userExists.password);
 
         if (isValid) {
-            res.status(200).send({msg:"User Logged in successfully."});
+            const token = generateToken(userExists._id, userExists.userName);
+            res.status(200).send({msg:"User Logged in successfully.", token});
             console.log("User Logged in successfully.");
         } else {
         res.status(400).send({msg:"Failed to log in."});
