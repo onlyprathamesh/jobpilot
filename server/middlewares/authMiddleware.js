@@ -1,0 +1,22 @@
+const jwt = require("jsonwebtoken");
+require("dotenv").config()
+
+const JWT_SECRET = process.env.JWT_SECRET;
+
+const verifyToken = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!token) {
+        return res.status(401).send({msg:"Unauthorized: No token provided."});
+    }
+    try {
+        const verified = jwt.verify(token, JWT_SECRET);
+        req.user = verified;
+        next();
+    } catch (error) {
+        res.status(403).send({msg:"Token is invalid or expired.", error:error.message});
+    }
+}
+
+module.exports = {verifyToken};
