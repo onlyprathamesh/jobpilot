@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const {generateToken} = require("../utils/generateToken");
+const {setTokenCookie} = require("../utils/cookie");
 
 const userRegister =  async (req, res) => {
     const {userName, email, password} = req.body;
@@ -20,6 +21,7 @@ const userRegister =  async (req, res) => {
         
             const createdUser = await User.create({userName, email, password:hashedPassword});
             const token = generateToken(createdUser._id, createdUser.userName);
+            setTokenCookie(res, token);
             res.status(200).send({msg:"User created successfully.", token});
             console.log("User created successfully.");
         
@@ -50,7 +52,8 @@ const userLogin = async (req, res) => {
 
         if (isValid) {
             const token = generateToken(userExists._id, userExists.userName);
-            res.status(200).send({msg:"User Logged in successfully.", token});
+            setTokenCookie(res, token);
+            res.status(200).send({msg:"User Logged in successfully."});
             console.log("User Logged in successfully.");
         } else {
         res.status(400).send({msg:"Failed to log in."});
