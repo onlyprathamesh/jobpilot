@@ -9,7 +9,6 @@ const addJob = async (req, res, next) => {
     const job = await Job.create(jobData);
 
     res.status(201).send({ msg: "Job created." });
-    console.log("Job Created", job);
   } catch (error) {
     return next(error);
   }
@@ -20,7 +19,6 @@ const viewJobs = async (req, res, next) => {
     const userId = req.user.id;
     const jobs = await Job.find({userId});
     res.status(200).send({ msg: "Jobs Fetched.", jobs: jobs });
-    console.log("Jobs Fetched.");
   } catch (error) {
     return next(error);
   }
@@ -46,7 +44,6 @@ const deleteJob = async (req, res, next) => {
     }
 
     res.status(200).send({ msg: "Job deleted.", deleteJob });
-    console.log("Job deleted.");
   } catch (error) {
     return next(error);
   }
@@ -80,7 +77,6 @@ const updateJob = async (req, res, next) => {
       return next(error);
     }
     res.status(200).send({ msg: "Job updated successfully.", updateJob });
-    console.log("Job updated.");
   } catch (error) {
     return next(error);
   }

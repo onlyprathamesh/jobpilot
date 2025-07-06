@@ -27,7 +27,6 @@ const userRegister =  async (req, res, next) => {
             const token = generateToken(createdUser._id, createdUser.userName);
             setTokenCookie(res, token);
             res.status(200).send({msg:"User created successfully.", token});
-            console.log("User created successfully.");
         
     } catch (error) {
         next(error);
@@ -63,7 +62,6 @@ const userLogin = async (req, res, next) => {
             const token = generateToken(userExists._id, userExists.userName);
             setTokenCookie(res, token);
             res.status(200).send({msg:"User Logged in successfully."});
-            console.log("User Logged in successfully.");
         } else {
         const error = new Error("Failed to log in");
         error.status = 400;
