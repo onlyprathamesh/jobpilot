@@ -26,6 +26,10 @@ const jobSchema = new mongoose.Schema({
         type: Number,
         default: 5
     },
+    followUpDone: {
+        type: Boolean,
+        default: false
+    },
     role: {
         type: String,
         required: true
