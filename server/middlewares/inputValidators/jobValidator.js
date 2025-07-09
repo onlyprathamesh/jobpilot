@@ -49,7 +49,7 @@ const jobValidationRules = [
 
   body("status")
     .notEmpty().withMessage("Status is required")
-    .isIn(["Applied", "Shortlisted", "Rejected"]).withMessage("Invalid status"),
+    .isIn(["Applied", "Shortlisted", "Rejected", "Pending"]).withMessage("Invalid status"),
 
   body("importantNote")
     .optional()
